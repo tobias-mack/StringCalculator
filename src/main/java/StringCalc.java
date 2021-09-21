@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -11,37 +10,38 @@ public class StringCalc {
 
     public int add(String str){
 
+        String multiDelimiter = ",";
+        char delimiterBasic = ',';
+
         if(str.isEmpty()){
             return 0;
         }
         else {
             int result = 0;
-            char delimiter = ',';
-            String delimiter2 = ",";
+            if(str.startsWith("//") && str.charAt(2) == '['){
+                Pattern multiDelimiterFormat = Pattern.compile("\\[([^A-Za-z0-9]+?)\\]{1,}?");        //mit "trägem regex quantifizierer"
+                Matcher multiDelimiterMatcher = multiDelimiterFormat.matcher(str);
+                str = str.substring(2);
 
-            Pattern pat = Pattern.compile("\\/\\/\\[([^A-Za-z0-9]+)\\]");
-            Matcher matcher = pat.matcher(str);
+                while(multiDelimiterMatcher.find()){
+                    multiDelimiter = multiDelimiter.concat(multiDelimiterMatcher.group(1));
+                    int len = multiDelimiterMatcher.group(1).length();
+                    str = str.substring(len+2);
+                    multiDelimiterMatcher = multiDelimiterFormat.matcher(str);
+                }
 
-            if (matcher.find()) {
-                System.out.println("Delimiter : " + matcher.group(1));
-                delimiter2 = matcher.group(1);
-                str = str.substring(3+delimiter2.length()+2);
-                System.out.println(str);
-            } else {
-                System.out.println("No match" +str);
-                if(str.startsWith("//")){
-                    delimiter = str.charAt(2);
+            }else {
+                if (!Character.isDigit(str.charAt(0))) {
+                    delimiterBasic = str.charAt(2);
                     str = str.substring(3);
                 }
             }
 
-
-
-            List<Integer> list = Stream.of(str.split("[," + delimiter + delimiter2 + "]"))
-                    .map (elem -> elem.replaceAll("\n",""))
-                    .filter(item -> !item.isEmpty())
-                    .map(Integer::parseInt)
-                    .collect(Collectors.toList());
+            List<Integer> list = Stream.of(str.split("[,"+ delimiterBasic + multiDelimiter +"]"))
+                        .map (elem -> elem.replaceAll("\n",""))
+                        .filter(item -> !item.isEmpty())
+                        .map(Integer::parseInt)
+                        .collect(Collectors.toList());
 
             for (Integer currentValue : list) {
                 if (currentValue < MIN) {
@@ -53,22 +53,9 @@ public class StringCalc {
             }
             return result;
         }
-
     }
+
     public static void main(String[] args) {
-       //String str = "//[***]\n1***2***3";
-       //Pattern pat = Pattern.compile("\\/\\/\\[([^A-Za-z0-9]+)\\]");
-       //Matcher matcher = pat.matcher(str);
-
-       //if (matcher.find()) {
-       //    System.out.println("Delimiter : " + matcher.group(1));
-       //}else{
-       //    System.out.println("no match");
-       //}
-
-        String s = "3**1";
-        String[] a = s.split("[" +"*" + '1'+ "]");
-        System.out.println(Arrays.toString(a));
 
     }
 

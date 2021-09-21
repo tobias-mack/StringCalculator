@@ -95,7 +95,20 @@ class StringCalcTest {
             assertThat(stringCalc.add(Params))
                     .isEqualTo(6);
         }
-
+        @DisplayName("multiple delimiters")
+        @Test
+        public void multipleDelimiterFormat() {
+            String Params = "//[*][%]\n1*2%3";
+            assertThat(stringCalc.add(Params))
+                    .isEqualTo(6);
+        }
+        @DisplayName("multiple delimiters with different length")
+        @Test
+        public void multipleDelimiters() {
+            String Params = "//[**][%][???]\n1**2%3???4";
+            assertThat(stringCalc.add(Params))
+                    .isEqualTo(10);
+        }
 
     }
 }
