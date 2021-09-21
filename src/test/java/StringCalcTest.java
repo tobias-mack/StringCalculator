@@ -19,8 +19,6 @@ class StringCalcTest {
         @Test
         public void stringWith0Params() {
             String zeroParams = "";
-
-            //test for empty String
             assertThat(stringCalc.add(zeroParams))
                     .isEqualTo(0);
 
@@ -30,8 +28,6 @@ class StringCalcTest {
         @Test
         public void stringWith1Param() {
             String oneParam = "2";
-
-            //test for 1 param String
             assertThat(stringCalc.add(oneParam))
                     .isEqualTo(2);
 
@@ -41,8 +37,6 @@ class StringCalcTest {
         @Test
         public void stringWith2Params() {
             String twoParams = "3,5";
-
-            //test for 2 param String
             assertThat(stringCalc.add(twoParams))
                     .isEqualTo(8);
         }
@@ -51,8 +45,6 @@ class StringCalcTest {
         @Test
         public void stringWithManyParams() {
             String Params = "3,5,22,100,70";
-
-            //test for 2 param String
             assertThat(stringCalc.add(Params))
                     .isEqualTo(200);
         }
@@ -64,8 +56,6 @@ class StringCalcTest {
         @Test
         public void stringWithNewLine() {
             String Params = "3,\n12";
-
-            //test for 2 param String
             assertThat(stringCalc.add(Params))
                     .isEqualTo(15);
         }
@@ -74,8 +64,6 @@ class StringCalcTest {
         @Test
         public void strWithDelimiter() {
             String Params = "//;\n3;12";
-
-            //test for 2 param String
             assertThat(stringCalc.add(Params))
                     .isEqualTo(15);
         }
@@ -84,8 +72,6 @@ class StringCalcTest {
         @Test
         public void negativeNumberDetection() {
             String Params = "//.\n-3.-12";
-
-            //test for 2 param String
             assertThat(stringCalc.add(Params))
                     .isEqualTo(-15);
         }
@@ -94,8 +80,6 @@ class StringCalcTest {
         @Test
         public void ignoreBigNumbers() {
             String Params = "//.\n1001.12.2";
-
-            //test for 2 param String
             assertThat(stringCalc.add(Params))
                     .isEqualTo(14);
         }
@@ -108,10 +92,10 @@ class StringCalcTest {
         @Test
         public void specificDelimiterFormat() {
             String Params = "//[***]\n1***2***3";
-
-            //test for 2 param String
             assertThat(stringCalc.add(Params))
                     .isEqualTo(6);
         }
+
+
     }
 }
