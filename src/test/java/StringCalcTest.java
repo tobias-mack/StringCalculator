@@ -97,4 +97,14 @@ class StringCalcTest {
                 .isEqualTo(14);
     }
 
+    @DisplayName("Delimiter of any length with specific format")
+    @Test
+    public void specificDelimiterFormat() {
+        String Params = "//[***]\n1***2***3";
+
+        //test for 2 param String
+        assertThat(stringCalc.add(Params))
+                .isEqualTo(6);
+    }
+
 }
