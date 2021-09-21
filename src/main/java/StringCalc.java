@@ -4,6 +4,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class StringCalc {
+    private final static int MAX = 1000;
+    private final static int MIN = 0;
 
     public int add(String str){
 
@@ -27,10 +29,12 @@ public class StringCalc {
                     .collect(Collectors.toList());
             for (int i = 0; i < list.size(); i++) {
                 Integer currentValue = list.get(i);
-                if(currentValue < 0){
+                if(currentValue < MIN){
                     System.out.println("negatives not allowed: " + currentValue );
                 }
-                result += currentValue;
+                if(currentValue <= MAX) {
+                    result += currentValue;
+                }
             }
             return result;
         }

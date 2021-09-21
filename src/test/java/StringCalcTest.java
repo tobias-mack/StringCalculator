@@ -87,5 +87,14 @@ class StringCalcTest {
         assertThat(stringCalc.add(Params))
                 .isEqualTo(-15);
     }
+    @DisplayName("dont accept values bigger than 1000")
+    @Test
+    public void ignoreBigNumbers() {
+        String Params = "//.\n1001.12.2";
+
+        //test for 2 param String
+        assertThat(stringCalc.add(Params))
+                .isEqualTo(14);
+    }
 
 }
