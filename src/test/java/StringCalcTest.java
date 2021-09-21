@@ -12,7 +12,7 @@ class StringCalcTest {
     private final StringCalc stringCalc = new StringCalc();
 
     @Nested
-    @DisplayName("basic")
+    @DisplayName("accepting basic input")
     class MyNested {
 
         @DisplayName("accept string with 0 params")
@@ -57,54 +57,61 @@ class StringCalcTest {
                     .isEqualTo(200);
         }
     }
+    @Nested
+    @DisplayName("accepting more specific stuff")
+    class test2 {
+        @DisplayName("accept string with new line")
+        @Test
+        public void stringWithNewLine() {
+            String Params = "3,\n12";
 
-    @DisplayName("accept string with new line")
-    @Test
-    public void stringWithNewLine() {
-        String Params = "3,\n12";
+            //test for 2 param String
+            assertThat(stringCalc.add(Params))
+                    .isEqualTo(15);
+        }
 
-        //test for 2 param String
-        assertThat(stringCalc.add(Params))
-                .isEqualTo(15);
+        @DisplayName("accept string with delimiter")
+        @Test
+        public void strWithDelimiter() {
+            String Params = "//;\n3;12";
+
+            //test for 2 param String
+            assertThat(stringCalc.add(Params))
+                    .isEqualTo(15);
+        }
+
+        @DisplayName("dont accept negatives")
+        @Test
+        public void negativeNumberDetection() {
+            String Params = "//.\n-3.-12";
+
+            //test for 2 param String
+            assertThat(stringCalc.add(Params))
+                    .isEqualTo(-15);
+        }
+
+        @DisplayName("dont accept values bigger than 1000")
+        @Test
+        public void ignoreBigNumbers() {
+            String Params = "//.\n1001.12.2";
+
+            //test for 2 param String
+            assertThat(stringCalc.add(Params))
+                    .isEqualTo(14);
+        }
     }
 
-    @DisplayName("accept string with delimiter")
-    @Test
-    public void strWithDelimiter() {
-        String Params = "//;\n3;12";
+    @Nested
+    @DisplayName("accepting different delimiter formats")
+    class Delimiter {
+        @DisplayName("Delimiter of any length with specific format")
+        @Test
+        public void specificDelimiterFormat() {
+            String Params = "//[***]\n1***2***3";
 
-        //test for 2 param String
-        assertThat(stringCalc.add(Params))
-                .isEqualTo(15);
+            //test for 2 param String
+            assertThat(stringCalc.add(Params))
+                    .isEqualTo(6);
+        }
     }
-
-    @DisplayName("dont accept negatives")
-    @Test
-    public void negativeNumberDetection() {
-        String Params = "//.\n-3.-12";
-
-        //test for 2 param String
-        assertThat(stringCalc.add(Params))
-                .isEqualTo(-15);
-    }
-    @DisplayName("dont accept values bigger than 1000")
-    @Test
-    public void ignoreBigNumbers() {
-        String Params = "//.\n1001.12.2";
-
-        //test for 2 param String
-        assertThat(stringCalc.add(Params))
-                .isEqualTo(14);
-    }
-
-    @DisplayName("Delimiter of any length with specific format")
-    @Test
-    public void specificDelimiterFormat() {
-        String Params = "//[***]\n1***2***3";
-
-        //test for 2 param String
-        assertThat(stringCalc.add(Params))
-                .isEqualTo(6);
-    }
-
 }
