@@ -3,8 +3,11 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
 class StringCalcTest {
@@ -72,8 +75,15 @@ class StringCalcTest {
         @Test
         public void negativeNumberDetection() {
             String Params = "//.\n-3.-12";
-            assertThat(stringCalc.add(Params))
-                    .isEqualTo(-15);
+            // laut Aufgabenstellung sollte hier eine Exception fliegen: " Schritt 5
+            // Calling Add with a negative number will throw an exception “negatives not allowed” -
+            // and the negative that was passed.if there are multiple negatives, show all of them in the exception message"
+//            assertThat(stringCalc.add(Params))
+//                    .isEqualTo(-15);
+
+            // FIXME verwende hierzu, siehe AssertJ Dokumentation: Assertions.assertThatThrownBy(...)...
+
+
         }
 
         @DisplayName("dont accept values bigger than 1000")
@@ -88,13 +98,15 @@ class StringCalcTest {
     @Nested
     @DisplayName("accepting different delimiter formats")
     class Delimiter {
+
         @DisplayName("Delimiter of any length with specific format")
         @Test
         public void specificDelimiterFormat() {
             String Params = "//[***]\n1***2***3";
             assertThat(stringCalc.add(Params))
-                    .isEqualTo(6);
+                .isEqualTo(6);
         }
+
         @DisplayName("multiple delimiters")
         @Test
         public void multipleDelimiterFormat() {
@@ -102,13 +114,57 @@ class StringCalcTest {
             assertThat(stringCalc.add(Params))
                     .isEqualTo(6);
         }
+
         @DisplayName("multiple delimiters with different length")
         @Test
         public void multipleDelimiters() {
+            // lokale Variablen schreibt man in Java normalerweise klein: "String params = ..."
             String Params = "//[**][%][???]\n1**2%3???4";
             assertThat(stringCalc.add(Params))
                     .isEqualTo(10);
         }
+
+
+        // FIXME nachfolgende beide Tests schlagen fehl, sollten aber - wenn ich mich bei der Aufgabenstellung nicht verlesen habe - grün sein
+        @Test
+        public void multipleDelimitersDifferentLength_allFeatures() {
+            String Params = "//[***][@][???]\n1***5\n2000,2***3@2";
+            assertThat(stringCalc.add(Params))
+                .isEqualTo(13);
+        }
+        @Test
+        public void multipleDelimitersDifferentLength_allFeatures2() {
+            String Params = "//[***][@][x]\n1***5\n2000,2***3@2x5";
+            assertThat(stringCalc.add(Params))
+                .isEqualTo(18);
+        }
+
+
+
+        @Test
+        public void multiNewline() {
+            String Params = "\n1\n\n\n5\n,\n3,5";
+            assertThat(stringCalc.add(Params))
+                .isEqualTo(13);
+        }
+
+
+        // ob dieser Test grün sein sollte oder fehlschlagen sollte ist Interpretationssache
+        @Test
+        public void shouldThisReallyBeGreen() {
+            String Params = "1,,5";
+            assertThat(stringCalc.add(Params))
+                .isEqualTo(6);
+        }
+
+        // FIXME dieser Test sollte m.E. grün sein, jedenfalls nicht Ergebnis 15
+        @Test
+        public void twoNewlinesBetweenNumbers() {
+            String Params = "1\n\n5";
+            assertThat(stringCalc.add(Params))
+                .isEqualTo(6);
+        }
+
 
     }
 }
